@@ -28,6 +28,7 @@ do
 	fi
 	if [[ ${ret_values[$f]} -eq 1 ]]; then
 		echo -e "$f: \x1b[31mFAILED\x1b[0m";
+		return -1
 	else
 		echo -e "$f: \x1b[32mSUCCEEDED\x1b[0m";
 	fi
@@ -37,6 +38,7 @@ for f in *__ryu.py;
 do
 	if [[ ${ret_values[$f]} -eq 137 ]]; then
 		echo -e "$f: \x1b[31mFAILED\x1b[0m";
+		return -1
 	else
 		echo -e "$f: \x1b[32mSUCCEEDED\x1b[0m";
 	fi
