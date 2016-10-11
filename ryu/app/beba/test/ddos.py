@@ -39,6 +39,8 @@ net.start()
 
 time.sleep(3)
 
+os.system('netstat -an')
+
 # Start Server @h2 on port 2000
 net['h2'].cmd('python ../echo_server.py 2000 &')
 

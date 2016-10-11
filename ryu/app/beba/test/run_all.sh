@@ -14,7 +14,7 @@ done
 for f in *__ryu.py;
 do
 	echo -e "\n\x1b[33m[Testing $f]\x1b[0m";
-	sudo ryu-manager $f;
+	sudo ryu-manager --verbose $f;
 	ret_values[$f]=$?;
 done 
 
