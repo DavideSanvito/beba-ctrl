@@ -39,7 +39,9 @@ net.start()
 
 time.sleep(3)
 
-os.system('netstat -an')
+os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
+os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
+
 
 # Start Server @h2 on port 2000
 net['h2'].cmd('python ../echo_server.py 2000 &')
