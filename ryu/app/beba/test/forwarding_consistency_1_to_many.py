@@ -22,6 +22,10 @@ net = Mininet(topo=SingleSwitchTopo(4),switch=UserSwitch,controller=RemoteContro
 net.start()
 
 time.sleep(5)
+
+os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
+os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
+
 print 'Starting Echo Servers on h2, h3 and h4'
 
 for h in [2,3,4]:

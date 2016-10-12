@@ -22,6 +22,9 @@ net.start()
 
 time.sleep(6)
 
+os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
+os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
+
 drop_perc = net.pingAll(2)
 if drop_perc == 0.0:
 	print 'Ping between all hosts: \x1b[32mSUCCESS!\x1b[0m'
