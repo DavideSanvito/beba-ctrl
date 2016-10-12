@@ -7,14 +7,23 @@ do
 	  continue
 	fi
 	echo -e "\n\x1b[33m[Testing $f]\x1b[0m";
-	sudo python $f;
+	if [ "$1" == "verbose" ]; then
+		sudo python $f verbose;
+	else
+		sudo python $f;
+	fi
 	ret_values[$f]=$?;
 done
 
 for f in *__ryu.py;
 do
 	echo -e "\n\x1b[33m[Testing $f]\x1b[0m";
-	sudo ryu-manager --verbose $f;
+	if [ "$1" == "verbose" ]; then
+		verbose = "true";
+		sudo ryu-manager --verbose $f;
+	else
+		sudo ryu-manager $f;
+	fi
 	ret_values[$f]=$?;
 done 
 

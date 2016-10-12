@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import os,subprocess,time
+import os,subprocess,time,sys
 import distutils.spawn
 from mininet.net import Mininet
 from mininet.topo import SingleSwitchTopo
@@ -31,7 +31,11 @@ os.system("sudo mn -c 2> /dev/null")
 os.system("kill -9 $(pidof -x ryu-manager) 2> /dev/null")
 
 print 'Starting Ryu controller'
-os.system('ryu-manager --verbose ../ddos/ddos.py &')
+print sys.argv
+if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	os.system('ryu-manager --verbose ../ddos/ddos.py &')
+else:
+        os.system('ryu-manager ../ddos/ddos.py 2> /dev/null &')
 
 print 'Starting Mininet'
 net = Mininet(topo=SingleSwitchTopo(2),switch=UserSwitch,controller=RemoteController,cleanup=True,autoSetMacs=True,listenPort=6634,autoStaticArp=True)
@@ -39,8 +43,9 @@ net.start()
 
 time.sleep(3)
 
-os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
-os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
+if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
+	os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
 
 
 # Start Server @h2 on port 2000
