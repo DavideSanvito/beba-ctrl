@@ -30,6 +30,8 @@ drop_perc = net.pingAll(2)
 os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
 os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
 
+os.system('cat /tmp/s1-ofd.log')
+
 if drop_perc == 0.0:
 	print 'Ping between all hosts: \x1b[32mSUCCESS!\x1b[0m'
 else:
