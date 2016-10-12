@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import os,subprocess,time
+import os,subprocess,time,sys
 import distutils.spawn
 from mininet.net import Mininet
 from mininet.topo import SingleSwitchTopo
@@ -15,7 +15,11 @@ os.system("sudo mn -c 2> /dev/null")
 os.system("kill -9 $(pidof -x ryu-manager) 2> /dev/null")
 
 print 'Starting Ryu controller'
-os.system('ryu-manager ../forwarding_consistency_1_to_many.py 2> /dev/null &')
+
+if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	os.system('ryu-manager --verbose ../forwarding_consistency_1_to_many.py &')
+else:
+	os.system('ryu-manager ../forwarding_consistency_1_to_many.py 2> /dev/null &')
 
 print 'Starting Mininet'
 net = Mininet(topo=SingleSwitchTopo(4),switch=UserSwitch,controller=RemoteController,cleanup=True,autoSetMacs=True,listenPort=6634)
@@ -23,8 +27,9 @@ net.start()
 
 time.sleep(5)
 
-os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
-os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
+if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
+	os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
 
 print 'Starting Echo Servers on h2, h3 and h4'
 

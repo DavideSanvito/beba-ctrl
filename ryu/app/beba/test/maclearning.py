@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import os,subprocess,time
+import os,subprocess,time,sys
 from mininet.net import Mininet
 from mininet.topo import SingleSwitchTopo
 from mininet.node import UserSwitch,RemoteController
@@ -14,7 +14,11 @@ os.system("sudo mn -c 2> /dev/null")
 os.system("kill -9 $(pidof -x ryu-manager) 2> /dev/null")
 
 print 'Starting Ryu controller'
-os.system('ryu-manager --verbose ../maclearning.py  &')
+
+if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	os.system('ryu-manager --verbose ../maclearning.py  &')
+else:
+	os.system('ryu-manager ../maclearning.py 2> /dev/null &')
 
 print 'Starting Mininet'
 net = Mininet(topo=SingleSwitchTopo(4),switch=UserSwitch,controller=RemoteController,cleanup=True,autoSetMacs=True,listenPort=6634,autoStaticArp=True)
@@ -22,16 +26,11 @@ net.start()
 
 time.sleep(6)
 
-os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
-os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
+if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
+	os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
 
 drop_perc = net.pingAll(2)
-
-os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
-os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
-
-os.system('cat /tmp/s1-ofd.log')
-
 if drop_perc == 0.0:
 	print 'Ping between all hosts: \x1b[32mSUCCESS!\x1b[0m'
 else:
@@ -57,11 +56,6 @@ with open("/tmp/tcpdumplog.h2","r") as myfile:
     h2data=myfile.read()
 with open("/tmp/tcpdumplog.h3","r") as myfile:
     h3data=myfile.read()
-
-print 'h2'
-os.system('cat /tmp/tcpdumplog.h2')
-print 'h3'
-os.system('cat /tmp/tcpdumplog.h3')
 
 if 'ICMP echo request' in h2data and 'ICMP echo reply' in h2data and 'ICMP echo request' in h3data and 'ICMP echo reply' not in h3data:
 	print '\nPing from h1 to h2 (request should be in broadcast, reply in unicast): \x1b[32mSUCCESS!\x1b[0m'

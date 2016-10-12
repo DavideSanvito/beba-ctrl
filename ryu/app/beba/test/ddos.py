@@ -31,7 +31,6 @@ os.system("sudo mn -c 2> /dev/null")
 os.system("kill -9 $(pidof -x ryu-manager) 2> /dev/null")
 
 print 'Starting Ryu controller'
-print sys.argv
 if len(sys.argv)>1 and sys.argv[1]=='verbose':
 	os.system('ryu-manager --verbose ../ddos/ddos.py &')
 else:
