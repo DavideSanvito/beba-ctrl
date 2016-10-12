@@ -58,6 +58,11 @@ with open("/tmp/tcpdumplog.h2","r") as myfile:
 with open("/tmp/tcpdumplog.h3","r") as myfile:
     h3data=myfile.read()
 
+print 'h2'
+os.system('cat /tmp/tcpdumplog.h2')
+print 'h3'
+os.system('cat /tmp/tcpdumplog.h3')
+
 if 'ICMP echo request' in h2data and 'ICMP echo reply' in h2data and 'ICMP echo request' in h3data and 'ICMP echo reply' not in h3data:
 	print '\nPing from h1 to h2 (request should be in broadcast, reply in unicast): \x1b[32mSUCCESS!\x1b[0m'
 else:
