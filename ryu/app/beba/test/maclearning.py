@@ -44,8 +44,8 @@ while t<15:
 	t += 1
 	time.sleep(1)
 
-net['h2'].cmd('(tcpdump -n -l &> /tmp/tcpdumplog.h2) &')
-net['h3'].cmd('(tcpdump -n -l &> /tmp/tcpdumplog.h3) &')
+net['h2'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h2) &')
+net['h3'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h3) &')
 time.sleep(3)
 net['h1'].cmd('ping -c1 10.0.0.2')
 time.sleep(3)
