@@ -89,6 +89,8 @@ if 'ESTABLISHED' in out:
 	print 'Test 2: \x1b[32mSUCCESS!\x1b[0m'
 else:
 	print 'Test 2: \x1b[31mFAIL\x1b[0m'
+	if len(sys.argv)>1 and sys.argv[1]=='verbose':
+        	os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
 	exit(1)
 net['h1'].cmd('kill -9 $(pidof hping3)')
 
@@ -109,7 +111,9 @@ while 'ESTABLISHED' not in out and attempts<5:
 	time.sleep(1)
 
 if 'ESTABLISHED' in out:
-	print 'Test 3: \x1b[31mFAIL\x1b[0m'
+	print 'Test 3: \x1b[31mFAIL\x1b[0m'Ã
+	if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
 	exit(1)
 else:
 	print 'Test 3: \x1b[32mSUCCESS!\x1b[0m'
@@ -135,6 +139,8 @@ if 'ESTABLISHED' in out:
 	print 'Test 4: \x1b[32mSUCCESS!\x1b[0m'
 else:
 	print 'Test 4: \x1b[31mFAIL\x1b[0m'
+	if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
 	exit(1)
 net['h1'].cmd('kill -9 $(pidof hping3)')
 

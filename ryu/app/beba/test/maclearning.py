@@ -35,6 +35,8 @@ if drop_perc == 0.0:
 	print 'Ping between all hosts: \x1b[32mSUCCESS!\x1b[0m'
 else:
 	print 'Ping between all hosts: \x1b[31mFAIL\x1b[0m'
+	if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
 	exit(1)
 
 t = 0
@@ -61,6 +63,8 @@ if 'ICMP echo request' in h2data and 'ICMP echo reply' in h2data and 'ICMP echo 
 	print '\nPing from h1 to h2 (request should be in broadcast, reply in unicast): \x1b[32mSUCCESS!\x1b[0m'
 else:
 	print '\nPing from h1 to h2 (request should be in broadcast, reply in unicast): \x1b[31mFAIL\x1b[0m'
+	if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
 	exit(1)
 
 # Kill Mininet and/or Ryu

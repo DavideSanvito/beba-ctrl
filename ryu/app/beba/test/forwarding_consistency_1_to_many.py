@@ -54,12 +54,18 @@ for h in [2,3,4]:
 
 if sum(syn_recv.values()) != 0:
 	print '\x1b[31mFAIL\x1b[0m: some connections are still in SYN_RECV (maybe SYN and ACK have not been consistently forwarded!)'
+	if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
 	exit(1)
 elif sum(established.values()) != CONN_NUM:
 	print '\x1b[31mFAIL\x1b[0m: not all the %d connections have been ESTABLISHED' % CONN_NUM
+	if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
 	exit(1)
 elif 0 in established.values():
 	print '\x1b[31mFAIL\x1b[0m: not all the servers have been selected'
+	if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
 	exit(1)
 else:
 	print '\x1b[32mSUCCESS!\x1b[0m'
