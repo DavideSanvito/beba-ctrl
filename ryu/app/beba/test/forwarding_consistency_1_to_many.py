@@ -50,7 +50,7 @@ syn_recv = {}
 for h in [2,3,4]:
 	out = net['h%d' % h].cmd('(netstat -an | grep tcp | grep 10.0.0.%d:%d00)' % (h,h))
 	print '[h'+str(h)+']'
-	out2 = net['h%d' % h].cmd('(netstat -an | grep tcp )' % (h))
+	out2 = net['h%d' % h].cmd('(netstat -an | grep tcp )')
 	print out2
 	established[h]=out.count("ESTABLISHED")
 	syn_recv[h]=out.count("SYN_RECV")
