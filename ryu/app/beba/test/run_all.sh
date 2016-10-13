@@ -17,6 +17,8 @@ done
 
 for f in *__ryu.py;
 do
+	sudo mn -c 2> /dev/null
+	sudo kill -9 $(pidof -x ryu-manager) 2> /dev/null
 	echo -e "\n\x1b[33m[Testing $f]\x1b[0m";
 	if [ "$1" == "verbose" ]; then
 		sudo ryu-manager --verbose $f;
