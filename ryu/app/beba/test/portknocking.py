@@ -39,7 +39,7 @@ out = ''
 attempts = 0
 while 'ESTABLISHED' not in out and attempts<15:
 	out = net['h2'].cmd('(netstat -an | grep udp | grep 22)')
-	print net['h2'].cmd('(netstat -an | grep udp')
+	print net['h2'].cmd('(netstat -an | grep udp)')
 	print 'Waiting %d seconds...' % (15-attempts)
 	attempts += 1
 	time.sleep(1)
