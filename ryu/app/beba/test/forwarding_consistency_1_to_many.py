@@ -38,8 +38,10 @@ for h in [2,3,4]:
 
 time.sleep(3)
 
-os.system('python ../echo_server.py 80')
-os.system('sudo python ../echo_server.py 80')
+print 'senza sudo'
+os.system('python ../echo_server.py 80 &')
+print 'con sudo'
+os.system('sudo python ../echo_server.py 80 &')
 
 CONN_NUM = 20
 print 'Starting %d TCP connections from h1' %CONN_NUM
