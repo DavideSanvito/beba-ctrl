@@ -38,10 +38,7 @@ for h in [2,3,4]:
 
 time.sleep(3)
 
-print 'senza sudo'
 os.system('python ../echo_server.py 80 &')
-print 'con sudo'
-os.system('sudo python ../echo_server.py 80 &')
 
 CONN_NUM = 20
 print 'Starting %d TCP connections from h1' %CONN_NUM
@@ -54,6 +51,7 @@ established = {}
 syn_recv = {}
 for h in [2,3,4]:
 	out = net['h%d' % h].cmd('(netstat -an | grep tcp | grep 10.0.0.%d:%d00)' % (h,h))
+	print '[h'+int(h)+'] '+net['h%d' % h].cmd('(netstat -an | grep tcp )' % (h,h))
 	established[h]=out.count("ESTABLISHED")
 	syn_recv[h]=out.count("SYN_RECV")
 
