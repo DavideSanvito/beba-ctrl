@@ -41,7 +41,9 @@ time.sleep(3)
 CONN_NUM = 20
 print 'Starting %d TCP connections from h1' %CONN_NUM
 for n in range(CONN_NUM):
-	net['h1'].cmd('(echo "HI!" | nc -q -1 10.0.0.2 80) &')
+	net['h1'].cmd('(echo "HI!" | nc -q 10 10.0.0.2 80) &')
+
+os.system('nc -v')
 
 time.sleep(3)
 
@@ -49,9 +51,7 @@ established = {}
 syn_recv = {}
 for h in [2,3,4]:
 	out = net['h%d' % h].cmd('(netstat -an | grep tcp | grep 10.0.0.%d:%d00)' % (h,h))
-	print '[h'+str(h)+']'
-	out2 = net['h%d' % h].cmd('(netstat -an | grep tcp )')
-	print out2
+	print '[h'+str(h)+'] '+ net['h%d' % h].cmd('(netstat -an | grep tcp )')
 	established[h]=out.count("ESTABLISHED")
 	syn_recv[h]=out.count("SYN_RECV")
 
