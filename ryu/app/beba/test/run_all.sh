@@ -19,7 +19,6 @@ for f in *__ryu.py;
 do
 	echo -e "\n\x1b[33m[Testing $f]\x1b[0m";
 	if [ "$1" == "verbose" ]; then
-		verbose = "true";
 		sudo ryu-manager --verbose $f;
 	else
 		sudo ryu-manager $f;
