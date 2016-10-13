@@ -47,6 +47,9 @@ if 'ESTABLISHED' in out:
 	print '\x1b[32mSUCCESS!\x1b[0m'
 else:
 	print '\x1b[31mFAIL\x1b[0m'
+	if len(sys.argv)>1 and sys.argv[1]=='verbose':
+	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
+	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
 	exit(1)
 
 # Kill Mininet and/or Ryu
