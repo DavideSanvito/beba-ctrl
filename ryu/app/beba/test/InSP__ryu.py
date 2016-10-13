@@ -59,7 +59,7 @@ class BebaInSP(app_manager.RyuApp):
 
 	def ping_and_sniff(self,test_num):
 		print '\n\nStart Tcpdump on H1-eth0 interface'
-		self.net['h1'].cmd('(tcpdump -n -l &> /tmp/tcpdumplog.h1) &')
+		self.net['h1'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h1) &')
 		t = 0
 		while t<3:
 			print 'Waiting %d sec for tcpdump startup...' % (3-t)
