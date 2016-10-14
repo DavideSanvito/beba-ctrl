@@ -25,7 +25,7 @@ print 'Starting Mininet'
 net = Mininet(topo=SingleSwitchTopo(4),switch=UserSwitch,controller=RemoteController,cleanup=True,autoSetMacs=True,listenPort=6634)
 net.start()
 
-time.sleep(5)
+time.sleep(3)
 
 if len(sys.argv)>1 and sys.argv[1]=='verbose':
 	os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
@@ -35,32 +35,38 @@ print 'Starting Echo Servers on h2, h3 and h4'
 
 for h in [2,3,4]:
 	net['h%d' % h].cmd('python ../echo_server.py %d00 &' %h)
+	#net['h%d' % h].cmd('ncat -e /bin/cat -k -l %d00 &' %h)
+	#net['h%d' % h].cmd('nc -lvkdp %d00 &' %h)
 
 time.sleep(3)
 
 CONN_NUM = 20
 print 'Starting %d TCP connections from h1' %CONN_NUM
 
-net['h1'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h1) &')
-net['h2'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h2) &')
+#net['h1'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h1) &')
+#net['h2'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h2) &')
 
 for n in range(CONN_NUM):
-	net['h1'].cmd('(echo "HI!" | nc -q -1 10.0.0.2 80) &')
+	#net['h1'].cmd('(echo "HI!" | nc -q -1 10.0.0.2 80) &')
+	net['h1'].cmd('(echo "HI!" | nc 10.0.0.2 80 -d) &')
 
-
-time.sleep(3)
+time.sleep(5)
 
 print '[h1]'
 os.system('cat /tmp/tcpdumplog.h1')
 print '[h2]'
 os.system('cat /tmp/tcpdumplog.h2')
 
+print
+print
+print
+
 established = {}
 syn_recv = {}
 for h in [2,3,4]:
 	out = net['h%d' % h].cmd('(netstat -an | grep tcp | grep 10.0.0.%d:%d00)' % (h,h))
-	print '[h'+str(h)+'] '+ net['h%d' % h].cmd('(netstat -an | grep tcp )')
-        print '[h'+str(h)+'] '+ net['h%d' % h].cmd('ifconfig')
+	print '[h'+str(h)+'] '
+	print net['h%d' % h].cmd('(netstat -an | grep tcp )')
 	established[h]=out.count("ESTABLISHED")
 	syn_recv[h]=out.count("SYN_RECV")
 
