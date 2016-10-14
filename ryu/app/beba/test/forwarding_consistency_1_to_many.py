@@ -34,9 +34,9 @@ if len(sys.argv)>1 and sys.argv[1]=='verbose':
 print 'Starting Echo Servers on h2, h3 and h4'
 
 for h in [2,3,4]:
-	net['h%d' % h].cmd('python ../echo_server.py %d00 &' %h)
+	#net['h%d' % h].cmd('python ../echo_server.py %d00 &' %h)
 	#net['h%d' % h].cmd('ncat -e /bin/cat -k -l %d00 &' %h)
-	#net['h%d' % h].cmd('nc -lvkdp %d00 &' %h)
+	net['h%d' % h].cmd('nc -lvkdp %d00 &' %h)
 
 time.sleep(3)
 
