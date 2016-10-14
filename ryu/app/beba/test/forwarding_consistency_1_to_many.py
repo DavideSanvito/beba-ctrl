@@ -34,9 +34,9 @@ if len(sys.argv)>1 and sys.argv[1]=='verbose':
 print 'Starting Echo Servers on h2, h3 and h4'
 
 for h in [2,3,4]:
-	#net['h%d' % h].cmd('python ../echo_server.py %d00 &' %h)
+	net['h%d' % h].cmd('python ../echo_server.py %d00 &' %h)
 	#net['h%d' % h].cmd('ncat -e /bin/cat -k -l %d00 &' %h)
-	net['h%d' % h].cmd('nc -lvkdp %d00 &' %h)
+	#net['h%d' % h].cmd('nc -lvkdp %d00 &' %h)
 
 time.sleep(3)
 
@@ -48,7 +48,7 @@ print 'Starting %d TCP connections from h1' %CONN_NUM
 
 for n in range(CONN_NUM):
 	#net['h1'].cmd('(echo "HI!" | nc -q -1 10.0.0.2 80) &')
-	net['h1'].cmd('(echo "HI!" | nc 10.0.0.2 80 -d) &')
+	net['h1'].cmd('python tcp_client.py &')
 
 time.sleep(5)
 
