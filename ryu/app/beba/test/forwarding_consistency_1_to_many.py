@@ -63,6 +63,7 @@ os.system('cat /tmp/tcpdumplog.h2')
 print
 print
 print
+os.system('cat /tmp/s1-ofd.log')
 
 established = {}
 syn_recv = {}
