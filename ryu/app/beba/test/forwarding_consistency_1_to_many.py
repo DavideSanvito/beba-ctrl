@@ -42,6 +42,7 @@ CONN_NUM = 20
 print 'Starting %d TCP connections from h1' %CONN_NUM
 
 net['h1'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h1) &')
+net['h2'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h2) &')
 
 for n in range(CONN_NUM):
 	net['h1'].cmd('(echo "HI!" | nc -q -1 10.0.0.2 80) &')
@@ -49,7 +50,10 @@ for n in range(CONN_NUM):
 
 time.sleep(3)
 
+print '[h1]'
 os.system('cat /tmp/tcpdumplog.h1')
+print '[h2]'
+os.system('cat /tmp/tcpdumplog.h2')
 
 established = {}
 syn_recv = {}
