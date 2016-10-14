@@ -28,7 +28,7 @@ net.start()
 time.sleep(3)
 
 for i in range(1,5):
-	os.system('ethtool --offload s1-eth'+str(i)+'gso off tso off gro off')
+	os.system('sudo ethtool --offload s1-eth'+str(i)+' gso off tso off gro off')
 
 if len(sys.argv)>1 and sys.argv[1]=='verbose':
 	os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
