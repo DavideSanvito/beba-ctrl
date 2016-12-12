@@ -6,6 +6,7 @@ from mininet.net import Mininet
 from mininet.topo import SingleSwitchTopo
 from mininet.node import UserSwitch,RemoteController
 from mininet.term import makeTerm
+from beba import BebaSwitchDbg,BebaHost
 
 if os.geteuid() != 0:
     exit("You need to have root privileges to run this script")
@@ -22,7 +23,7 @@ else:
 	os.system('ryu-manager ../forwarding_consistency_1_to_many.py 2> /dev/null &')
 
 print 'Starting Mininet'
-net = Mininet(topo=SingleSwitchTopo(4),switch=UserSwitch,controller=RemoteController,cleanup=True,autoSetMacs=True,listenPort=6634)
+net = Mininet(topo=SingleSwitchTopo(4),switch=BebaSwitchDbg,host=BebaHost,controller=RemoteController,cleanup=True,autoSetMacs=True,listenPort=6634)
 net.start()
 
 time.sleep(3)
@@ -39,7 +40,6 @@ print 'Starting Echo Servers on h2, h3 and h4'
 for h in [2,3,4]:
 	net['h%d' % h].cmd('python ../echo_server.py %d00 &' %h)
 	#net['h%d' % h].cmd('ncat -e /bin/cat -k -l %d00 &' %h)
-	#net['h%d' % h].cmd('nc -lvkdp %d00 &' %h)
 
 time.sleep(3)
 
@@ -50,8 +50,7 @@ net['h1'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h1) &')
 net['h2'].cmd('(tcpdump -n -i any -l &> /tmp/tcpdumplog.h2) &')
 
 for n in range(CONN_NUM):
-	#net['h1'].cmd('(echo "HI!" | nc -q -1 10.0.0.2 80) &')
-	net['h1'].cmd('python tcp_client.py &')
+	net['h1'].cmd('(echo "HI!" | nc -q -1 10.0.0.2 80) &')
 
 time.sleep(5)
 
@@ -60,10 +59,6 @@ os.system('cat /tmp/tcpdumplog.h1')
 print '[h2]'
 os.system('cat /tmp/tcpdumplog.h2')
 
-print
-print
-print
-os.system('cat /tmp/s1-ofd.log')
 
 established = {}
 syn_recv = {}

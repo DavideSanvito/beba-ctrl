@@ -6,6 +6,10 @@ do
 	then
 	  continue
 	fi
+	if [ "$f" == "beba.py" ]
+	then
+	  continue
+	fi
 	echo -e "\n\x1b[33m[Testing $f]\x1b[0m";
 	if [ "$1" == "verbose" ]; then
 		sudo python $f verbose;
@@ -33,6 +37,10 @@ echo -e "\n*******************************************************************\n
 for f in *.py;
 do
 	if [[ $f == *"__ryu.py"* ]]
+	then
+	  continue
+	fi
+	if [ "$f" == "beba.py" ]
 	then
 	  continue
 	fi
