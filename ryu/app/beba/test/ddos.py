@@ -137,7 +137,7 @@ out = ''
 attempts = 0
 while 'ESTABLISHED' not in out and attempts<5:
 	out = net['h2'].cmd('(netstat -an | grep tcp | grep 10.0.0.2:2000)')
-	print out
+	print net['h2'].cmd('(netstat -an | grep tcp)')
 	print 'Waiting %d seconds...' % (5-attempts)
 	attempts += 1
 	time.sleep(1)
