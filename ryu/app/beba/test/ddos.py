@@ -126,31 +126,38 @@ else:
 net['h1'].cmd('kill -9 $(pidof hping3)')
 
 ###############################################################################
-time.sleep(2)
+attempts = 5
+attempts_cnt = 0
+while 1:
+	time.sleep(2)
 
-print '\nTest 4: h1 connects to h2 before an ongoing attack above the the threshold and continues sending data after the attack'
-net['h1'].cmd('((echo "HI"; sleep 5; echo "HI2") | nc -T af11 10.0.0.2 2000) &')
-time.sleep(2)
-net['h1'].cmd('hping3 -S -p 80 -i u5000 -o 28 10.0.0.2 &')
+	print '\nTest 4: h1 connects to h2 before an ongoing attack above the the threshold and continues sending data after the attack'
+	net['h1'].cmd('((echo "HI"; sleep 5; echo "HI2") | nc -T af11 10.0.0.2 2000) &')
+	time.sleep(2)
+	net['h1'].cmd('hping3 -S -p 80 -i u5000 -o 28 10.0.0.2 &')
 
-out = ''
-attempts = 0
-while 'ESTABLISHED' not in out and attempts<5:
-	out = net['h2'].cmd('(netstat -an | grep tcp | grep 10.0.0.2:2000)')
-	print net['h2'].cmd('(netstat -an | grep tcp)')
-	print 'Waiting %d seconds...' % (5-attempts)
-	attempts += 1
-	time.sleep(1)
+	out = ''
+	attempts = 0
+	while 'ESTABLISHED' not in out and attempts<5:
+		out = net['h2'].cmd('(netstat -an | grep tcp | grep 10.0.0.2:2000)')
+		print net['h2'].cmd('(netstat -an | grep tcp)')
+		print 'Waiting %d seconds...' % (5-attempts)
+		attempts += 1
+		time.sleep(1)
 
-if 'ESTABLISHED' in out:
-	print 'Test 4: \x1b[32mSUCCESS!\x1b[0m'
-else:
-	print 'Test 4: \x1b[31mFAIL\x1b[0m'
-	if len(sys.argv)>1 and sys.argv[1]=='verbose':
-	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
-	        os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
-	exit(1)
-net['h1'].cmd('kill -9 $(pidof hping3)')
+	if 'ESTABLISHED' in out:
+		print 'Test 4: \x1b[32mSUCCESS!\x1b[0m'
+		break
+	else:
+		print 'Test 4: \x1b[31mFAIL\x1b[0m'
+		if len(sys.argv)>1 and sys.argv[1]=='verbose':
+			os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
+			os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-state')
+		if attempts_cnt>attempts:
+			exit(1)
+		else:
+			attempts_cnt = attempts_cnt+1
+	net['h1'].cmd('kill -9 $(pidof hping3)')
 
 
 os.system('sudo dpctl tcp:127.0.0.1:6634 -c stats-flow')
