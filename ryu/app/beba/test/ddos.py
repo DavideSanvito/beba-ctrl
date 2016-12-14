@@ -6,7 +6,7 @@ from mininet.net import Mininet
 from mininet.topo import SingleSwitchTopo
 from mininet.node import UserSwitch,RemoteController
 from mininet.term import makeTerm
-from beba import BebaSwitch,BebaHost
+from beba import BebaHost
 
 if os.geteuid() != 0:
     exit("You need to have root privileges to run this script")
