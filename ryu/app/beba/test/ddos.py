@@ -38,7 +38,7 @@ else:
         os.system('ryu-manager ../ddos/ddos.py 2> /dev/null &')
 
 print 'Starting Mininet'
-net = Mininet(topo=SingleSwitchTopo(2),switch=BebaSwitch,host=BebaHost,controller=RemoteController,cleanup=True,autoSetMacs=True,listenPort=6634,autoStaticArp=True)
+net = Mininet(topo=SingleSwitchTopo(2),switch=UserSwitch,host=BebaHost,controller=RemoteController,cleanup=True,autoSetMacs=True,listenPort=6634,autoStaticArp=True)
 net.start()
 
 time.sleep(3)
