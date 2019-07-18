@@ -237,7 +237,9 @@ oxm_types = [
     oxm_fields.BebaExperimenter('condition7', 9, type_desc.Int1),
     oxm_fields.BebaExperimenter('timestamp', 10, type_desc.Int4),
     oxm_fields.BebaExperimenter('random', 11, type_desc.Int2),
-    oxm_fields.BebaExperimenter('pkt_len', 12, type_desc.Int2)
+    oxm_fields.BebaExperimenter('pkt_len', 12, type_desc.Int2),
+    oxm_fields.BebaExperimenter('hash_mod_p', 13, type_desc.Int1),
+    oxm_fields.BebaExperimenter('hash_mod_p_1', 14, type_desc.Int1)
 ]
 
 # generate utility methods
